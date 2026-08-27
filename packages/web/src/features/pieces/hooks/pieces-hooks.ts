@@ -202,7 +202,7 @@ export const piecesHooks = {
         }),
       staleTime: searchQuery ? 0 : Infinity,
       meta: isTableQuery
-        ? { showErrorDialog: true, loadSubsetOptions: {} }
+        ? { showErrorToast: true, loadSubsetOptions: {} }
         : undefined,
     });
     return {

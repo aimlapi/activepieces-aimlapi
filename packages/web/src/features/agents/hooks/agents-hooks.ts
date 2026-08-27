@@ -49,7 +49,7 @@ export const agentsQueries = {
       queryKey: [AGENTS_KEY, projectId ?? 'all'],
       queryFn: () => agentsApi.listAll({ ...(projectId ? { projectId } : {}) }),
       enabled,
-      meta: { showErrorDialog: true, loadSubsetOptions: {} },
+      meta: { showErrorToast: true, loadSubsetOptions: {} },
     }),
   useAgent: ({ id, enabled = true }: { id: string; enabled?: boolean }) =>
     useQuery({
