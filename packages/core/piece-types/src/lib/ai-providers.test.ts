@@ -22,6 +22,7 @@ describe('AI_PROVIDER_CAPABILITIES', () => {
             AIProviderName.QWEN,
             AIProviderName.MINIMAX,
             AIProviderName.MOONSHOT,
+            AIProviderName.AIMLAPI,
         ].sort())
     })
 

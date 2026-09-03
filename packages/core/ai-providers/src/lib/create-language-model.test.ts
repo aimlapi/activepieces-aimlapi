@@ -1,5 +1,5 @@
 import { AIProviderName } from '@activepieces/core-utils'
-import { AIProviderConfig, AIProviderModelType, VertexProviderConfig } from '@activepieces/core-piece-types'
+import { AIMLAPI_ATTRIBUTION_HEADERS, AIProviderConfig, AIProviderModelType, VertexProviderConfig } from '@activepieces/core-piece-types'
 import { describe, expect, it } from 'vitest'
 import { buildOpenAICompatibleHeaders, createLanguageModel } from './create-language-model'
 
@@ -315,5 +315,67 @@ describe('resolved endpoint, credentials and headers', () => {
         expect(headers['x-api-key']).toBe('SECRET')
         expect(headers['x-ap-project-id']).toBe('proj')
         expect(headers['x-shared']).toBe('from-default')
+    })
+})
+
+describe('aimlapi.com attribution', () => {
+    type ResolvedConfig = {
+        url: (opts: { path: string, modelId: string }) => string
+        headers: (() => Record<string, string>) | Record<string, string>
+    }
+
+    const configOf = (model: unknown): ResolvedConfig => (model as { config: ResolvedConfig }).config
+    const headersOf = (model: unknown): Record<string, string> => {
+        const { headers } = configOf(model)
+        const resolved = typeof headers === 'function' ? headers() : headers
+        return Object.fromEntries(Object.entries(resolved).map(([name, value]) => [name.toLowerCase(), value]))
+    }
+    const buildAimlapi = (options?: Record<string, unknown>) => createLanguageModel({
+        provider: AIProviderName.AIMLAPI,
+        auth: { apiKey: 'SECRET' },
+        config: {},
+        modelId: 'openai/gpt-4o-mini',
+        options,
+    })
+
+    it('keeps the partner id in the shape the gateway accepts', () => {
+        expect(AIMLAPI_ATTRIBUTION_HEADERS['X-AIMLAPI-Partner-ID']).toMatch(/^part_[A-Za-z0-9]{1,64}$/)
+        expect(AIMLAPI_ATTRIBUTION_HEADERS['X-AIMLAPI-Source']).toMatch(/^(web|agent|mcp)\/[a-z0-9-]{1,32}$/)
+    })
+
+    it('identifies the calling app, not the gateway, to analytics', () => {
+        expect(AIMLAPI_ATTRIBUTION_HEADERS['HTTP-Referer']).toBe('https://www.activepieces.com')
+        expect(AIMLAPI_ATTRIBUTION_HEADERS['X-Title']).toBe('Activepieces')
+    })
+
+    it('sends every attribution header on chat completions against the aimlapi.com base url', () => {
+        const model = buildAimlapi()
+        const headers = headersOf(model)
+
+        expect(identify(model).provider).toBe('aimlapi.chat')
+        expect(configOf(model).url({ path: '/chat/completions', modelId: 'openai/gpt-4o-mini' })).toBe('https://api.aimlapi.com/v1/chat/completions')
+        expect(headers['authorization']).toBe('Bearer SECRET')
+        for (const [name, value] of Object.entries(AIMLAPI_ATTRIBUTION_HEADERS)) {
+            expect(headers[name.toLowerCase()]).toBe(value)
+        }
+    })
+
+    it('lets caller metadata win a clash and never mutates the shared constant', () => {
+        const before = { ...AIMLAPI_ATTRIBUTION_HEADERS }
+        const overridden = headersOf(buildAimlapi({ extraHeaders: { 'X-Title': 'Embedded', 'x-ap-project-id': 'proj' } }))
+
+        expect(overridden['x-title']).toBe('Embedded')
+        expect(overridden['x-ap-project-id']).toBe('proj')
+        expect(headersOf(buildAimlapi())['x-title']).toBe('Activepieces')
+        expect({ ...AIMLAPI_ATTRIBUTION_HEADERS }).toEqual(before)
+    })
+
+    it('never rides attribution onto another provider', () => {
+        const others = [AIProviderName.OPENROUTER, AIProviderName.CUSTOM, AIProviderName.DEEPSEEK]
+        for (const provider of others) {
+            const headers = headersOf(buildFor(provider))
+            expect(headers['x-aimlapi-partner-id']).toBeUndefined()
+            expect(headers['x-aimlapi-source']).toBeUndefined()
+        }
     })
 })

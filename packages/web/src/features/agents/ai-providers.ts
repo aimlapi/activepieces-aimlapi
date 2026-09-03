@@ -168,6 +168,18 @@ This connects to Z.ai's international endpoint. A key from bigmodel.cn will not 
 `),
   },
   {
+    provider: AIProviderName.AIMLAPI,
+    name: 'aimlapi.com',
+    logoUrl: 'https://cdn.activepieces.com/pieces/aimlapi.png',
+    markdown: t(`Follow these instructions to get your AI/ML API Key:
+
+1. Go to https://aimlapi.com/app/keys and sign in.
+2. Click **Create API Key**, copy the key, and paste it below.
+
+This connects to the OpenAI-compatible chat completions endpoint, so every chat model in the AI/ML API catalog is listed here.
+`),
+  },
+  {
     provider: AIProviderName.CUSTOM,
     name: 'Other (OpenAI Compatible)',
     logoUrl: 'https://cdn.activepieces.com/pieces/new-core/text-ai.svg',

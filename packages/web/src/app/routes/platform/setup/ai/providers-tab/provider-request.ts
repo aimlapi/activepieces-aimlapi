@@ -89,6 +89,7 @@ function buildCreateRequest({
     case AIProviderName.QWEN:
     case AIProviderName.MINIMAX:
     case AIProviderName.MOONSHOT:
+    case AIProviderName.AIMLAPI:
       return {
         provider,
         displayName,
