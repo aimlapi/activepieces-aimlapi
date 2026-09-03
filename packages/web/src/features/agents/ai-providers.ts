@@ -3,6 +3,21 @@ import { t } from 'i18next';
 
 export const SUPPORTED_AI_PROVIDERS: AiProviderInfo[] = [
   {
+    provider: AIProviderName.AIMLAPI,
+    name: 'aimlapi.com',
+    // The other entries point at cdn.activepieces.com, which only Activepieces can publish to and which has no
+    // aimlapi.png — the card rendered a broken image. This is the same icon aimlapi.com serves for itself; a
+    // maintainer who would rather keep every logo on their own CDN need only upload it and change this line.
+    logoUrl: 'https://cdn.prod.website-files.com/65b8f36fa600366bc7cf9a67/6882319cfc66d25ec955be54_123.png',
+    markdown: t(`Follow these instructions to get your AI/ML API Key:
+
+1. Go to https://aimlapi.com/app/keys and sign in.
+2. Click **Create API Key**, copy the key, and paste it below.
+
+This connects to the OpenAI-compatible chat completions endpoint, so every chat model in the AI/ML API catalog is listed here.
+`),
+  },
+  {
     provider: AIProviderName.ANTHROPIC,
     name: 'Anthropic',
     markdown: t(`Follow these instructions to get your Claude API Key:
@@ -165,21 +180,6 @@ This connects to Model Studio's international (Singapore) endpoint. A key from t
 2. Create an API key, copy it, and paste it below.
 
 This connects to Z.ai's international endpoint. A key from bigmodel.cn will not authenticate here — add that account through **Other (OpenAI Compatible)** with your China base URL instead.
-`),
-  },
-  {
-    provider: AIProviderName.AIMLAPI,
-    name: 'aimlapi.com',
-    // The other entries point at cdn.activepieces.com, which only Activepieces can publish to and which has no
-    // aimlapi.png — the card rendered a broken image. This is the same icon aimlapi.com serves for itself; a
-    // maintainer who would rather keep every logo on their own CDN need only upload it and change this line.
-    logoUrl: 'https://cdn.prod.website-files.com/65b8f36fa600366bc7cf9a67/6882319cfc66d25ec955be54_123.png',
-    markdown: t(`Follow these instructions to get your AI/ML API Key:
-
-1. Go to https://aimlapi.com/app/keys and sign in.
-2. Click **Create API Key**, copy the key, and paste it below.
-
-This connects to the OpenAI-compatible chat completions endpoint, so every chat model in the AI/ML API catalog is listed here.
 `),
   },
   {
