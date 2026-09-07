@@ -170,7 +170,10 @@ This connects to Z.ai's international endpoint. A key from bigmodel.cn will not 
   {
     provider: AIProviderName.AIMLAPI,
     name: 'aimlapi.com',
-    logoUrl: 'https://cdn.activepieces.com/pieces/aimlapi.png',
+    // The other entries point at cdn.activepieces.com, which only Activepieces can publish to and which has no
+    // aimlapi.png — the card rendered a broken image. This is the same icon aimlapi.com serves for itself; a
+    // maintainer who would rather keep every logo on their own CDN need only upload it and change this line.
+    logoUrl: 'https://cdn.prod.website-files.com/65b8f36fa600366bc7cf9a67/6882319cfc66d25ec955be54_123.png',
     markdown: t(`Follow these instructions to get your AI/ML API Key:
 
 1. Go to https://aimlapi.com/app/keys and sign in.
