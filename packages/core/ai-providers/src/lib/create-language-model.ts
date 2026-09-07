@@ -1,5 +1,5 @@
 import { AIProviderName, observedProviderFetch, ProviderOutcomeReporter, spreadIfDefined } from '@activepieces/core-utils'
-import { AzureProviderConfig, BaseAIProviderAuthConfig, BedrockProviderAuthConfig, BedrockProviderConfig, OPENAI_COMPATIBLE_VENDOR_BASE_URLS, OpenAICompatibleProviderConfig, VertexProviderAuthConfig, VertexProviderConfig } from '@activepieces/core-piece-types'
+import { AIMLAPI_ATTRIBUTION_HEADERS, AIMLAPI_BASE_URL, AzureProviderConfig, BaseAIProviderAuthConfig, BedrockProviderAuthConfig, BedrockProviderConfig, OPENAI_COMPATIBLE_VENDOR_BASE_URLS, OpenAICompatibleProviderConfig, VertexProviderAuthConfig, VertexProviderConfig } from '@activepieces/core-piece-types'
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock'
 import { createVertex } from '@ai-sdk/google-vertex'
 import { createVertexAnthropic } from '@ai-sdk/google-vertex/anthropic'
@@ -90,6 +90,16 @@ export function createLanguageModel({ provider, auth, config, modelId, options =
                 name: provider,
                 baseURL: OPENAI_COMPATIBLE_VENDOR_BASE_URLS[provider],
                 apiKey,
+                ...observed,
+            }).chatModel(modelId)
+        }
+        case AIProviderName.AIMLAPI: {
+            const { apiKey } = auth as BaseAIProviderAuthConfig
+            return createOpenAICompatible({
+                name: provider,
+                baseURL: AIMLAPI_BASE_URL,
+                apiKey,
+                headers: { ...AIMLAPI_ATTRIBUTION_HEADERS, ...(options.extraHeaders ?? {}) },
                 ...observed,
             }).chatModel(modelId)
         }

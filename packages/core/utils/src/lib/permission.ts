@@ -63,4 +63,5 @@ export enum AIProviderName {
     QWEN = 'qwen',
     MINIMAX = 'minimax',
     MOONSHOT = 'moonshot',
+    AIMLAPI = 'aimlapi',
 }

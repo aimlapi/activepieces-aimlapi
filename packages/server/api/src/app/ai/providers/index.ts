@@ -1,6 +1,7 @@
 import { AIProviderName } from '@activepieces/core-utils'
 import { AIProviderAuthConfig, AIProviderConfig } from '@activepieces/shared'
 import { AIProviderStrategy } from './ai-provider'
+import { aimlapiProvider } from './aimlapi-provider'
 import { anthropicProvider } from './anthropic-provider'
 import { azureProvider } from './azure-provider'
 import { bedrockProvider } from './bedrock-provider'
@@ -30,6 +31,7 @@ export const aiProviders: Record<AIProviderName, AIProviderStrategy<AIProviderAu
     [AIProviderName.QWEN]: openAiCompatibleVendor({ name: 'Qwen', provider: AIProviderName.QWEN }),
     [AIProviderName.MINIMAX]: openAiCompatibleVendor({ name: 'MiniMax', provider: AIProviderName.MINIMAX }),
     [AIProviderName.MOONSHOT]: openAiCompatibleVendor({ name: 'Moonshot AI', provider: AIProviderName.MOONSHOT }),
+    [AIProviderName.AIMLAPI]: aimlapiProvider,
     [AIProviderName.ACTIVEPIECES]: {
         ...openRouterProvider,
         name: 'Activepieces',

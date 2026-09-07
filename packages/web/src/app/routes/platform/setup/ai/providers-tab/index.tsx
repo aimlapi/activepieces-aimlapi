@@ -659,6 +659,7 @@ function providerInfoOf({
 }
 
 const RECOMMENDED_PROVIDERS: AIProviderName[] = [
+  AIProviderName.AIMLAPI,
   AIProviderName.ANTHROPIC,
   AIProviderName.OPENAI,
 ];
@@ -669,6 +670,8 @@ function recommendedTagline({
   provider: AIProviderName;
 }): string | undefined {
   switch (provider) {
+    case AIProviderName.AIMLAPI:
+      return t('One key for 350+ chat models across every major lab');
     case AIProviderName.ANTHROPIC:
       return t('Claude models — strong for chat and agents');
     case AIProviderName.OPENAI:

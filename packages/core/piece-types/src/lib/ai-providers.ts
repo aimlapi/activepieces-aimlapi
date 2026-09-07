@@ -325,6 +325,7 @@ const NO_IMAGE_GENERATION_PROVIDERS = new Set<AIProviderName>([
     AIProviderName.QWEN,
     AIProviderName.MINIMAX,
     AIProviderName.MOONSHOT,
+    AIProviderName.AIMLAPI,
 ])
 
 export const OPENAI_COMPATIBLE_VENDOR_BASE_URLS: Record<OpenAiCompatibleVendor, string> = {
@@ -335,6 +336,17 @@ export const OPENAI_COMPATIBLE_VENDOR_BASE_URLS: Record<OpenAiCompatibleVendor, 
     [AIProviderName.MINIMAX]: 'https://api.minimax.io/v1',
     [AIProviderName.MOONSHOT]: 'https://api.moonshot.ai/v1',
 }
+
+export const AIMLAPI_BASE_URL = 'https://api.aimlapi.com/v1'
+
+export const AIMLAPI_CHAT_MODEL_TYPE = 'openai/chat-completions'
+
+export const AIMLAPI_ATTRIBUTION_HEADERS: Readonly<Record<string, string>> = Object.freeze({
+    'HTTP-Referer': 'https://www.activepieces.com',
+    'X-Title': 'Activepieces',
+    'X-AIMLAPI-Partner-ID': 'part_activepieces',
+    'X-AIMLAPI-Source': 'agent/activepieces',
+})
 
 function buildProviderCapabilities(provider: AIProviderName): AIProviderCapabilities {
     return {
@@ -375,6 +387,7 @@ export const AI_PROVIDER_CAPABILITIES: Record<AIProviderName, AIProviderCapabili
     [AIProviderName.QWEN]: buildProviderCapabilities(AIProviderName.QWEN),
     [AIProviderName.MINIMAX]: buildProviderCapabilities(AIProviderName.MINIMAX),
     [AIProviderName.MOONSHOT]: buildProviderCapabilities(AIProviderName.MOONSHOT),
+    [AIProviderName.AIMLAPI]: buildProviderCapabilities(AIProviderName.AIMLAPI),
 }
 
 export const aiProviderUtils = {
