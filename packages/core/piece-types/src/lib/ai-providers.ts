@@ -344,7 +344,7 @@ export const AIMLAPI_CHAT_MODEL_TYPE = 'openai/chat-completions'
 export const AIMLAPI_ATTRIBUTION_HEADERS: Readonly<Record<string, string>> = Object.freeze({
     'HTTP-Referer': 'https://www.activepieces.com',
     'X-Title': 'Activepieces',
-    'X-AIMLAPI-Partner-ID': 'part_activepieces',
+    'X-AIMLAPI-Partner-ID': 'part_p9mF1ptnJDgRoCnMik3wN8zL',
     'X-AIMLAPI-Source': 'agent/activepieces',
 })
 
